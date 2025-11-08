@@ -1,55 +1,24 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>쿠팡 바로가기</title>
-
-  <!-- ✅ PWA manifest 연결 -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- ✅ 홈 화면 아이콘 (fallback) -->
-  <link rel="apple-touch-icon" href="ittemmallicon.png">
-  <meta name="theme-color" content="#007aff">
-
-  <!-- ✅ OG 태그 (공유 시 미리보기) -->
-  <meta property="og:title" content="쿠팡 바로가기">
-  <meta property="og:description" content="쿠팡 링크를 홈화면에 바로 추가해보세요!">
-  <meta property="og:image" content="https://github.com/trotcodi-ui/cupang2/blob/main/ittemmallicon.png?raw=true">
-  <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/">
-
-  <style>
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: #f8f9fb;
-      color: #333;
-      text-align: center;
-      padding: 40px 20px;
-    }
-    h1 {
-      color: #007aff;
-      font-size: 22px;
-      margin-bottom: 25px;
-    }
-    button {
-      background: #007aff;
-      color: #fff;
-      border: none;
-      padding: 15px 25px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #005fcc;
-    }
-  </style>
-</head>
 <body>
   <h1>쿠팡 바로가기 설치</h1>
   <p>아래 버튼을 눌러 홈 화면에 쿠팡 바로가기를 추가하세요.</p>
   <button onclick="installPWA()">홈 화면에 추가</button>
 
+  <!-- ✅ 여기 아래부터 bridge.html 내용 추가 -->
+  <hr style="margin:40px 0; border:none; border-top:1px solid #ddd;">
+  
+  <h2>📱 갤럭시 사용자</h2>
+  <img src="android_open_browser.png" alt="갤럭시 크롬으로 열기 안내" style="max-width:90%; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom:10px;">
+  <p>1️⃣ 화면 <strong>오른쪽 하단의 점 3개(⋮)</strong> 를 누른 뒤<br>
+     2️⃣ <strong>‘크롬에서 열기’</strong> 를 선택해주세요.<br>
+     3️⃣ 열린 크롬 화면에서 <strong>‘홈 화면에 추가’</strong> 를 눌러주세요.</p>
+
+  <h2>🍎 아이폰 사용자</h2>
+  <img src="ios_open_browser.png" alt="아이폰 사파리로 열기 안내" style="max-width:90%; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom:10px;">
+  <p>1️⃣ 화면 <strong>아래쪽 가운데 공유 아이콘(⬆️)</strong> 을 누른 뒤<br>
+     2️⃣ 아래로 스크롤해서 <strong>‘사파리로 열기’</strong> 를 선택해주세요.<br>
+     3️⃣ 다시 공유 버튼(⬆️) → <strong>‘홈 화면에 추가’</strong> 를 눌러주세요.</p>
+
+  <!-- ✅ 기존 스크립트 유지 -->
   <script>
     let deferredPrompt;
 
@@ -72,11 +41,9 @@
       }
     }
 
-    // service worker 등록
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('서비스워커 등록 완료'));
     }
   </script>
 </body>
-</html>
