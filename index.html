@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>쿠팡 바로가기</title>
+  <title>쿠팡링크 바로가기</title>
 
   <!-- ✅ PWA manifest 연결 -->
   <link rel="manifest" href="manifest.json">
@@ -12,8 +12,8 @@
   <link rel="apple-touch-icon" href="ittemmallicon.png">
   <meta name="theme-color" content="#007aff">
 
-  <!-- ✅ OG 미리보기 (카카오톡 등) -->
-  <meta property="og:title" content="쿠팡 바로가기">
+  <!-- ✅ OG 미리보기 -->
+  <meta property="og:title" content="쿠팡링크 바로가기">
   <meta property="og:description" content="쿠팡 링크를 홈화면에 바로 추가해보세요!">
   <meta property="og:image" content="https://github.com/trotcodi-ui/cupang2/blob/main/ittemmallicon.png?raw=true">
   <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/">
@@ -40,10 +40,12 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
+      margin-top: 10px;
     }
     button:hover {
       background: #005fcc;
     }
+    .hidden { display: none; }
     h2 {
       margin-top: 40px;
       font-size: 18px;
@@ -69,9 +71,12 @@
 </head>
 <body>
   <h1>쿠팡 바로가기 설치</h1>
-  <p>밑에 설명대로 크롬,사파리로 연뒤에.</p>
+  <p>밑에 설명대로 크롬, 사파리로 연 뒤에</p>
   <p>아래 버튼을 눌러 홈 화면에 쿠팡 바로가기를 추가하세요.</p>
-  <button id="installBtn">홈 화면에 추가</button>
+
+  <button id="installBtn" class="hidden">홈 화면에 추가</button>
+  <p id="iosGuide" class="hidden">🍎 사파리 하단의 공유버튼(⬆️) → <strong>홈 화면에 추가</strong>를 눌러주세요.</p>
+  <p id="kakaoGuide" class="hidden">⚠️ 카카오톡 인앱에서는 홈화면 추가가 불가능합니다.<br>오른쪽 상단 점3개(⋮) → <strong>크롬에서 열기</strong>를 눌러주세요.</p>
 
   <hr>
 
@@ -86,30 +91,41 @@
   <img src="ios_open_browser.png" alt="아이폰 사파리로 열기 안내">
   <p>1️⃣ 화면 <strong>하단 오른쪽 공유 아이콘(⬆️)</strong> 을 누른 뒤<br>
      2️⃣ 아래로 스크롤해서 <strong>‘사파리로 열기’</strong> 를 선택해주세요.<br>
-     3️⃣ 다시 하단가운데 공유 버튼(⬆️) → <strong>‘홈 화면에 추가’</strong> 를 눌러주세요.</p>
+     3️⃣ 다시 하단 가운데 공유 버튼(⬆️) → <strong>‘홈 화면에 추가’</strong> 를 눌러주세요.</p>
 
   <script>
-    // ✅ 설치 프롬프트 제어
-    let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
+    const iosGuide = document.getElementById('iosGuide');
+    const kakaoGuide = document.getElementById('kakaoGuide');
 
+    const ua = navigator.userAgent.toLowerCase();
+    const isKakao = ua.includes('kakaotalk');
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isAndroid = /android/.test(ua);
+
+    // ✅ 카카오톡 인앱에서는 안내만 표시
+    if (isKakao) {
+      kakaoGuide.classList.remove('hidden');
+    }
+    // ✅ iOS는 사파리 안내 표시
+    else if (isIOS) {
+      iosGuide.classList.remove('hidden');
+    }
+
+    // ✅ PWA 설치 제어
+    let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      installBtn.style.display = 'inline-block';
+      if (isAndroid && !isKakao) installBtn.classList.remove('hidden');
     });
 
     installBtn.addEventListener('click', async () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          console.log('PWA 설치 완료');
-        }
+        if (outcome === 'accepted') console.log('PWA 설치 완료');
         deferredPrompt = null;
-      } else {
-        // PC나 iOS 등 홈화면 추가 불가능 시 직접 쿠팡 링크로 이동
-        window.location.href = "https://link.coupang.com/a/cL3QkL";
       }
     });
 
@@ -120,7 +136,7 @@
         .catch((err) => console.log('서비스워커 등록 실패:', err));
     }
 
-    // ✅ 앱 실행 시 자동 리디렉션
+    // ✅ 아이콘으로 실행 시 자동 리디렉션
     window.addEventListener('load', () => {
       if (window.matchMedia('(display-mode: standalone)').matches) {
         window.location.href = "https://link.coupang.com/a/cL3QkL";
@@ -129,5 +145,3 @@
   </script>
 </body>
 </html>
-
-
