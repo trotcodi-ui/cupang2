@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>쿠팡링크 홈화면 추가</title>
+  <link rel="manifest" href="https://raw.githubusercontent.com/trotcodi-ui/coupang-pwa/main/manifest.json">
+  <meta name="theme-color" content="#007aff">
+
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      background: #f8f9fb;
+      color: #333;
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #007aff;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    button {
+      background-color: #007aff;
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 17px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      background-color: #005ecb;
+    }
+    .ios-guide {
+      display: none;
+      background: #fff8e1;
+      border-radius: 8px;
+      padding: 15px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #333;
+    }
+    @supports (-webkit-touch-callout: none) {
+      /* iPhone Safari 전용 안내문 표시 */
+      .ios-guide { display: block; }
+      #installButton { display: none; }
+    }
+    /* ✖ 닫기 버튼 */
+    #closeButton {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: #007aff;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #closeButton:hover {
+      background: #005ecb;
+    }
+  </style>
+
+  <script>
+    // ✅ 홈화면 아이콘에서 실행 시 자동으로 쿠팡 링크로 이동
+    window.addEventListener('load', () => {
+      const targetUrl = "https://link.coupang.com/a/cL3QkL";
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        location.href = targetUrl;
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <!-- 닫기 버튼 -->
+  <button id="closeButton">✖ 닫기</button>
+
+  <h1>📱 쿠팡링크 홈화면 추가</h1>
+  <p>쿠팡링크를 홈화면에 추가하면<br>
+     한 번의 터치로 쿠팡 파트너스 링크로 바로 연결됩니다.</p>
+
+  <button id="installButton">홈화면에 추가하기</button>
+
+  <div class="ios-guide">
+    <p>📲 iPhone 사용자는 Safari 하단의 <strong>공유 아이콘(⬆️)</strong>을 누르고<br>
+       <strong>“홈 화면에 추가”</strong>를 선택해주세요.</p>
+  </div>
+
+  <script>
+    // ✅ 닫기 버튼 클릭 시 원래 페이지로 돌아가기
+    document.getElementById('closeButton').addEventListener('click', () => {
+      window.history.back();
+    });
+
+    let deferredPrompt;
+    const installButton = document.getElementById('installButton');
+
+    // ✅ 안드로이드 PWA 설치 버튼 표시
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installButton.style.display = 'inline-block';
+    });
+
+    // ✅ 홈화면 추가 이벤트
+    installButton.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          alert('✅ 홈화면에 쿠팡링크가 추가되었습니다!');
+        }
+        deferredPrompt = null;
+      } else {
+        alert('⚠️ iPhone에서는 Safari 공유 메뉴에서 직접 추가해주세요.');
+      }
+    });
+  </script>
+</body>
+</html>
