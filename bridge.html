@@ -3,58 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>쿠팡 바로가기 브릿지</title>
+  <title>쿠팡링크아이콘 홈화면추가 📱</title>
+
+  <!-- ✅ 카카오톡 미리보기 (Open Graph 메타태그) -->
+  <meta property="og:title" content="쿠팡링크아이콘 홈화면추가 📱">
+  <meta property="og:description" content="한 번만 추가하면 터치 한 번으로 쿠팡 바로가기! 크롬 또는 사파리에서 홈화면에 추가해보세요.">
+  <meta property="og:image" content="https://trotcodi-ui.github.io/cupang2/ittemmallicon.png">
+  <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/bridge.html">
+  <meta name="twitter:card" content="summary_large_image">
+
   <style>
     body {
       font-family: 'Noto Sans KR', sans-serif;
       text-align: center;
-      background: #f8f9fb;
+      padding: 80px 20px;
+      background: #f9fafc;
       color: #333;
-      padding: 60px 20px;
     }
     h1 {
       color: #007aff;
       font-size: 22px;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
-    p { font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
     button {
-      background: #007aff;
-      color: #fff;
+      margin-top: 24px;
+      background-color: #007aff;
+      color: white;
       border: none;
       padding: 12px 24px;
       font-size: 16px;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
     }
-    button:hover { background: #005ecb; }
+    button:hover {
+      background-color: #005ecb;
+    }
   </style>
 </head>
-<body>
 
-  <h1>쿠팡 링크 열기</h1>
-  <p>카카오톡에서는 홈화면 추가 기능이 지원되지 않습니다.<br>
-     아래 버튼을 눌러 크롬(또는 Safari)에서 열어주세요.</p>
-  <button id="openExternal">🌐 크롬에서 열기</button>
+<body>
+  <h1>📱 쿠팡링크아이콘 홈화면추가</h1>
+  <p>카카오톡 인앱 브라우저에서는<br><strong>“크롬으로 열기”</strong> 또는 <strong>“Safari로 열기”</strong>를 눌러주세요.<br>
+     그 후 홈화면에 추가하면<br>쿠팡 바로가기 아이콘이 만들어집니다!</p>
+
+  <button id="openBtn">크롬(또는 Safari)에서 열기</button>
 
   <script>
-    function isKakaoInApp() {
+    const indexUrl = "https://trotcodi-ui.github.io/cupang2/index.html";
+
+    function isInKakaoInApp() {
       const ua = navigator.userAgent.toLowerCase();
-      return ua.includes('kakao') || ua.includes('kakaotalk');
+      return ua.includes("kakaotalk");
     }
 
-    const button = document.getElementById('openExternal');
+    document.getElementById("openBtn").addEventListener("click", () => {
+      window.location.href = indexUrl;
+    });
 
-    if (!isKakaoInApp()) {
-      // 인앱이 아닐 경우 자동으로 index.html로 이동
-      window.location.href = './index.html';
-    } else {
-      // 인앱일 경우 버튼으로 수동 이동 안내
-      button.addEventListener('click', () => {
-        window.location.href = './index.html';
-      });
-    }
+    // ✅ 인앱 브라우저가 아니면 자동 이동
+    window.addEventListener("load", () => {
+      if (!isInKakaoInApp()) {
+        window.location.href = indexUrl;
+      }
+    });
   </script>
-
 </body>
 </html>
