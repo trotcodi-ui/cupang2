@@ -1,6 +1,6 @@
 {
   "name": "쿠팡 바로가기",
-  "short_name": "쿠팡",
+  "short_name": "쿠팡링크",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -18,3 +18,4 @@
     }
   ]
 }
+
