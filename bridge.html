@@ -1,90 +1,80 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>쿠팡링크아이콘 홈화면추가 📱</title>
-
-  <!-- ✅ 카카오톡 미리보기 메타태그 -->
-  <meta property="og:title" content="쿠팡링크아이콘 홈화면추가 📱" />
-  <meta property="og:description" content="한 번만 추가하면 터치 한 번으로 쿠팡 바로가기! 크롬 또는 사파리에서 홈화면에 추가해보세요." />
-  <meta property="og:image" content="https://trotcodi-ui.github.io/cupang2/ittemmallicon.png" />
-  <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/bridge.html" />
-  <meta name="twitter:card" content="summary_large_image" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>쿠팡링크 연결 중...</title>
   <style>
     body {
       font-family: 'Noto Sans KR', sans-serif;
-      text-align: center;
-      padding: 70px 20px;
-      background: #f9fafc;
+      background: #f9fbff;
       color: #333;
+      text-align: center;
+      padding: 60px 20px;
     }
     h1 {
       color: #007aff;
       font-size: 22px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     p {
       font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 25px;
+      line-height: 1.5;
     }
     button {
       background-color: #007aff;
-      color: #fff;
+      color: white;
       border: none;
-      padding: 13px 26px;
-      border-radius: 8px;
+      padding: 14px 24px;
       font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      margin-top: 20px;
     }
     button:hover {
       background-color: #005ecb;
     }
   </style>
 </head>
-
 <body>
-  <h1>📱 쿠팡링크아이콘 홈화면추가</h1>
-  <p>
-    카카오톡에서 클릭하셨다면<br>
-    아래 버튼을 눌러 <strong>크롬(또는 Safari)</strong>로 열어주세요.<br>
-    홈화면에 추가하면 쿠팡 바로가기 아이콘이 생성됩니다!
-  </p>
-  <button id="openBtn">크롬 / Safari 에서 열기</button>
+
+  <h1>🔗 쿠팡링크 열기 준비 중...</h1>
+  <p id="message">잠시만 기다려주세요.</p>
+  <button id="openBrowserButton" style="display:none;">🌐 크롬(또는 사파리)으로 열기</button>
 
   <script>
-    const indexUrl = "https://trotcodi-ui.github.io/cupang2/index.html";
+    const isInApp = () => {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      return (
+        ua.indexOf("KAKAOTALK") > -1 ||
+        ua.indexOf("FBAN") > -1 ||
+        ua.indexOf("FBAV") > -1 ||
+        ua.indexOf("Instagram") > -1 ||
+        ua.indexOf("NAVER") > -1
+      );
+    };
 
-    function isInKakaoInApp() {
-      const ua = navigator.userAgent.toLowerCase();
-      return ua.includes("kakaotalk");
+    const targetUrl = "https://tourmaline-dango-9bd58a.netlify.app/index.html";
+
+    if (isInApp()) {
+      document.getElementById("message").innerText =
+        "카카오톡 등 앱 내부에서는 바로 열 수 없습니다.\n아래 버튼을 눌러 외부 브라우저로 이동하세요.";
+      const btn = document.getElementById("openBrowserButton");
+      btn.style.display = "inline-block";
+      btn.addEventListener("click", () => {
+        // 크롬 또는 사파리 열기 시도
+        const schemeUrl = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+          ? targetUrl
+          : "intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+        window.location.href = schemeUrl;
+      });
+    } else {
+      document.getElementById("message").innerText = "잠시 후 자동으로 연결됩니다...";
+      setTimeout(() => {
+        window.location.href = targetUrl;
+      }, 1200);
     }
-
-    document.getElementById("openBtn").addEventListener("click", () => {
-      const ua = navigator.userAgent.toLowerCase();
-
-      if (ua.includes("android")) {
-        // ✅ 안드로이드: 크롬 강제 실행
-        location.href = "intent:" + indexUrl.replace(/^https?:\/\//, "") +
-          "#Intent;scheme=https;package=com.android.chrome;end";
-      } else if (ua.includes("iphone") || ua.includes("ipad")) {
-        // ✅ 아이폰: Safari로 새 탭 열기
-        window.open(indexUrl, "_blank");
-      } else {
-        // ✅ 일반 PC 브라우저용
-        location.href = indexUrl;
-      }
-    });
-
-    // ✅ 카카오톡 인앱이 아닐 때는 자동 이동
-    window.addEventListener("load", () => {
-      if (!isInKakaoInApp()) {
-        window.location.href = indexUrl;
-      }
-    });
   </script>
+
 </body>
 </html>
