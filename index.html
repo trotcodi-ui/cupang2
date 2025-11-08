@@ -45,7 +45,11 @@
     button:hover {
       background: #005fcc;
     }
-    .hidden { display: none; }
+    .notice {
+      font-size: 14px;
+      color: #ff3b30;
+      margin-top: 10px;
+    }
     h2 {
       margin-top: 40px;
       font-size: 18px;
@@ -74,9 +78,8 @@
   <p>밑에 설명대로 크롬, 사파리로 연 뒤에</p>
   <p>아래 버튼을 눌러 홈 화면에 쿠팡 바로가기를 추가하세요.</p>
 
-  <button id="installBtn" class="hidden">홈 화면에 추가</button>
-  <p id="iosGuide" class="hidden">🍎 사파리 하단의 공유버튼(⬆️) → <strong>홈 화면에 추가</strong>를 눌러주세요.</p>
-  <p id="kakaoGuide" class="hidden">⚠️ 카카오톡 인앱에서는 홈화면 추가가 불가능합니다.<br>오른쪽 상단 점3개(⋮) → <strong>크롬에서 열기</strong>를 눌러주세요.</p>
+  <button id="installBtn">홈 화면에 추가</button>
+  <div id="notice" class="notice"></div>
 
   <hr>
 
@@ -95,46 +98,50 @@
 
   <script>
     const installBtn = document.getElementById('installBtn');
-    const iosGuide = document.getElementById('iosGuide');
-    const kakaoGuide = document.getElementById('kakaoGuide');
+    const notice = document.getElementById('notice');
 
     const ua = navigator.userAgent.toLowerCase();
     const isKakao = ua.includes('kakaotalk');
     const isIOS = /iphone|ipad|ipod/.test(ua);
     const isAndroid = /android/.test(ua);
 
-    let deferredPrompt;
+    let deferredPrompt = null;
 
-    // ✅ 브라우저별 동작 설정
+    // ✅ 브라우저 별 안내 메시지 설정
     if (isKakao) {
-      kakaoGuide.classList.remove('hidden');
+      notice.innerHTML = "⚠️ 카카오톡 인앱에서는 홈화면 추가가 지원되지 않습니다.<br>오른쪽 상단 점3개(⋮) → <strong>크롬에서 열기</strong>를 눌러주세요.";
     } else if (isIOS) {
-      iosGuide.classList.remove('hidden');
+      notice.innerHTML = "🍎 사파리 하단의 공유버튼(⬆️) → <strong>홈 화면에 추가</strong>를 눌러주세요.";
+    } else if (isAndroid) {
+      notice.innerHTML = "✅ 안드로이드 크롬에서는 아래 버튼으로 홈화면에 설치할 수 있습니다.";
+    } else {
+      notice.innerHTML = "💻 PC에서는 테스트 화면만 표시됩니다.";
     }
 
+    // ✅ 안드로이드 설치 프롬프트 준비
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      if (isAndroid && !isKakao) {
-        installBtn.classList.remove('hidden');
-      }
     });
 
+    // ✅ 버튼 클릭 이벤트
     installBtn.addEventListener('click', async () => {
       if (isKakao) {
-        alert('⚠️ 카카오톡 인앱에서는 홈화면 추가가 지원되지 않습니다.\n크롬으로 열어주세요.');
-        return; // ❌ 인앱에서는 작동 안 함
+        alert("⚠️ 카카오톡 인앱에서는 홈화면 추가가 지원되지 않습니다.\n크롬으로 열어주세요.");
+        return; // 인앱에서는 동작 금지
       }
 
-      if (deferredPrompt) {
+      if (isAndroid && deferredPrompt) {
         deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') console.log('✅ PWA 설치 완료');
+        const choice = await deferredPrompt.userChoice;
+        if (choice.outcome === 'accepted') {
+          console.log("✅ PWA 설치 완료");
+        }
         deferredPrompt = null;
       } else if (isIOS) {
-        alert('🍎 사파리 하단 공유버튼(⬆️) → 홈 화면에 추가를 눌러주세요.');
+        alert("🍎 사파리 하단 공유버튼(⬆️) → 홈 화면에 추가를 눌러주세요.");
       } else {
-        alert('이 브라우저에서는 홈화면 추가 기능을 사용할 수 없습니다.');
+        alert("⚠️ 이 브라우저에서는 홈화면 추가 기능을 사용할 수 없습니다.");
       }
     });
 
@@ -145,7 +152,7 @@
         .catch((err) => console.log('서비스워커 등록 실패:', err));
     }
 
-    // ✅ 설치된 아이콘 실행 시 자동 리디렉션
+    // ✅ 설치된 아이콘으로 실행 시 쿠팡으로 자동 이동
     window.addEventListener('load', () => {
       if (window.matchMedia('(display-mode: standalone)').matches) {
         window.location.href = "https://link.coupang.com/a/cL3QkL";
