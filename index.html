@@ -70,11 +70,11 @@
 <body>
   <h1>쿠팡 바로가기 설치</h1>
   <p>아래 버튼을 눌러 홈 화면에 쿠팡 바로가기를 추가하세요.</p>
-  <button onclick="installPWA()">홈 화면에 추가</button>
+  <button id="installBtn">홈 화면에 추가</button>
 
   <hr>
 
-  <!-- ✅ 설치 안내 (bridge.html 내용 통합) -->
+  <!-- ✅ 설치 안내 -->
   <h2>📱 갤럭시 사용자</h2>
   <img src="android_open_browser.png" alt="갤럭시 크롬으로 열기 안내">
   <p>1️⃣ 화면 <strong>오른쪽 하단의 점 3개(⋮)</strong> 를 누른 뒤<br>
@@ -88,27 +88,29 @@
      3️⃣ 다시 공유 버튼(⬆️) → <strong>‘홈 화면에 추가’</strong> 를 눌러주세요.</p>
 
   <script>
-    // ✅ PWA 설치 프롬프트 제어
+    // ✅ 설치 프롬프트 제어
     let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
     });
 
-    function installPWA() {
+    installBtn.addEventListener('click', async () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('PWA 설치 완료');
-          }
-          deferredPrompt = null;
-        });
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          console.log('PWA 설치 완료');
+        }
+        deferredPrompt = null;
       } else {
-        alert('이 브라우저에서는 홈 화면 추가 기능을 사용할 수 없습니다.');
+        // PC나 iOS 등 홈화면 추가 불가능 시 직접 쿠팡 링크로 이동
+        window.location.href = "https://link.coupang.com/a/cL3QkL";
       }
-    }
+    });
 
     // ✅ 서비스워커 등록
     if ('serviceWorker' in navigator) {
@@ -116,6 +118,13 @@
         .then(() => console.log('서비스워커 등록 완료'))
         .catch((err) => console.log('서비스워커 등록 실패:', err));
     }
+
+    // ✅ 앱 실행 시 자동 리디렉션
+    window.addEventListener('load', () => {
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        window.location.href = "https://link.coupang.com/a/cL3QkL";
+      }
+    });
   </script>
 </body>
 </html>
