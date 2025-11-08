@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>쿠팡 바로가기 브릿지</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      text-align: center;
+      background: #f8f9fb;
+      color: #333;
+      padding: 60px 20px;
+    }
+    h1 {
+      color: #007aff;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+    p { font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
+    button {
+      background: #007aff;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #005ecb; }
+  </style>
+</head>
+<body>
+
+  <h1>쿠팡 링크 열기</h1>
+  <p>카카오톡에서는 홈화면 추가 기능이 지원되지 않습니다.<br>
+     아래 버튼을 눌러 크롬(또는 Safari)에서 열어주세요.</p>
+  <button id="openExternal">🌐 크롬에서 열기</button>
+
+  <script>
+    function isKakaoInApp() {
+      const ua = navigator.userAgent.toLowerCase();
+      return ua.includes('kakao') || ua.includes('kakaotalk');
+    }
+
+    const button = document.getElementById('openExternal');
+
+    if (!isKakaoInApp()) {
+      // 인앱이 아닐 경우 자동으로 index.html로 이동
+      window.location.href = './index.html';
+    } else {
+      // 인앱일 경우 버튼으로 수동 이동 안내
+      button.addEventListener('click', () => {
+        window.location.href = './index.html';
+      });
+    }
+  </script>
+
+</body>
+</html>
