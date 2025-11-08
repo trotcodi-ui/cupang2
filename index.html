@@ -1,94 +1,82 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>쿠팡링크 홈화면 추가</title>
-  <link rel="manifest" href="https://trotcodi-ui.github.io/cupang2/manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>쿠팡 바로가기</title>
+
+  <!-- ✅ PWA manifest 연결 -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- ✅ 홈 화면 아이콘 (fallback) -->
+  <link rel="apple-touch-icon" href="ittemmallicon.png">
   <meta name="theme-color" content="#007aff">
+
+  <!-- ✅ OG 태그 (공유 시 미리보기) -->
+  <meta property="og:title" content="쿠팡 바로가기">
+  <meta property="og:description" content="쿠팡 링크를 홈화면에 바로 추가해보세요!">
+  <meta property="og:image" content="https://github.com/trotcodi-ui/cupang2/blob/main/ittemmallicon.png?raw=true">
+  <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/">
 
   <style>
     body {
       font-family: 'Noto Sans KR', sans-serif;
-      margin: 0;
       background: #f8f9fb;
       color: #333;
       text-align: center;
-      padding: 60px 20px 40px;
+      padding: 40px 20px;
     }
-    h1 { font-size: 24px; color: #007aff; margin-bottom: 15px; }
-    p { font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
+    h1 {
+      color: #007aff;
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
     button {
-      background-color: #007aff;
+      background: #007aff;
       color: #fff;
       border: none;
-      padding: 14px 28px;
-      font-size: 17px;
+      padding: 15px 25px;
       border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
-    button:hover { background-color: #005ecb; }
-    .ios-guide {
-      display: none;
-      background: #fff8e1;
-      border-radius: 8px;
-      padding: 15px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #333;
-    }
-    @supports (-webkit-touch-callout: none) {
-      .ios-guide { display: block; }
-      #installButton { display: none; }
+    button:hover {
+      background: #005fcc;
     }
   </style>
-
-  <script>
-    // ✅ 홈화면 아이콘으로 열렸을 경우 쿠팡 링크로 바로 이동
-    window.addEventListener('load', () => {
-      const targetUrl = "https://link.coupang.com/a/cL3QkL";
-      if (window.matchMedia('(display-mode: standalone)').matches) {
-        location.href = targetUrl;
-      }
-    });
-  </script>
 </head>
-
 <body>
-  <h1>📱 쿠팡링크 홈화면 추가</h1>
-  <p>쿠팡링크를 홈화면에 추가하면<br>
-     한 번의 터치로 쿠팡 파트너스 링크로 바로 연결됩니다.</p>
-
-  <button id="installButton">홈화면에 추가하기</button>
-
-  <div class="ios-guide">
-    <p>📲 iPhone 사용자는 Safari 하단의 <strong>공유 아이콘(⬆️)</strong>을 누르고<br>
-       <strong>“홈 화면에 추가”</strong>를 선택해주세요.</p>
-  </div>
+  <h1>쿠팡 바로가기 설치</h1>
+  <p>아래 버튼을 눌러 홈 화면에 쿠팡 바로가기를 추가하세요.</p>
+  <button onclick="installPWA()">홈 화면에 추가</button>
 
   <script>
     let deferredPrompt;
-    const installButton = document.getElementById('installButton');
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      installButton.style.display = 'inline-block';
     });
 
-    installButton.addEventListener('click', async () => {
+    function installPWA() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          alert('✅ 홈화면에 쿠팡링크가 추가되었습니다!');
-        }
-        deferredPrompt = null;
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('PWA 설치 완료');
+          }
+          deferredPrompt = null;
+        });
       } else {
-        alert('⚠️ iPhone에서는 Safari 공유 메뉴에서 직접 추가해주세요.');
+        alert('이 브라우저에서는 홈 화면 추가 기능을 사용할 수 없습니다.');
       }
-    });
+    }
+
+    // service worker 등록
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('서비스워커 등록 완료'));
+    }
   </script>
 </body>
 </html>
