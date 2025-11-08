@@ -3,78 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>쿠팡링크 연결 중...</title>
+  <title>쿠팡링크 홈화면 추가 안내</title>
   <style>
     body {
       font-family: 'Noto Sans KR', sans-serif;
-      background: #f9fbff;
+      margin: 0;
+      background: #f9fafc;
       color: #333;
       text-align: center;
-      padding: 60px 20px;
+      padding: 30px 20px;
     }
     h1 {
       color: #007aff;
-      font-size: 22px;
+      font-size: 24px;
       margin-bottom: 20px;
     }
-    p {
-      font-size: 16px;
-      line-height: 1.5;
+    .section {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 30px;
     }
-    button {
-      background-color: #007aff;
-      color: white;
-      border: none;
-      padding: 14px 24px;
-      font-size: 16px;
+    img {
+      width: 90%;
+      max-width: 380px;
       border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
+      margin-bottom: 10px;
     }
-    button:hover {
-      background-color: #005ecb;
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
     }
+    strong { color: #007aff; }
   </style>
 </head>
 <body>
+  <h1>📱 쿠팡링크 홈화면 추가</h1>
 
-  <h1>🔗 쿠팡링크 열기 준비 중...</h1>
-  <p id="message">잠시만 기다려주세요.</p>
-  <button id="openBrowserButton" style="display:none;">🌐 크롬(또는 사파리)으로 열기</button>
+  <div class="section">
+    <img src="https://trotcodi-ui.github.io/cupang2/android_open_browser.png" alt="안드로이드 브라우저 열기 안내">
+    <p>
+      <strong>안드로이드 사용자는</strong><br>
+      오른쪽 상단의 <strong>점 3개</strong>를 누른 뒤<br>
+      <strong>“다른 브라우저로 열기 → Chrome 선택”</strong><br>
+      이후 크롬에서 <strong>홈 화면에 추가</strong>를 선택하세요.
+    </p>
+  </div>
 
-  <script>
-    const isInApp = () => {
-      const ua = navigator.userAgent || navigator.vendor || window.opera;
-      return (
-        ua.indexOf("KAKAOTALK") > -1 ||
-        ua.indexOf("FBAN") > -1 ||
-        ua.indexOf("FBAV") > -1 ||
-        ua.indexOf("Instagram") > -1 ||
-        ua.indexOf("NAVER") > -1
-      );
-    };
-
-    const targetUrl = "https://tourmaline-dango-9bd58a.netlify.app/index.html";
-
-    if (isInApp()) {
-      document.getElementById("message").innerText =
-        "카카오톡 등 앱 내부에서는 바로 열 수 없습니다.\n아래 버튼을 눌러 외부 브라우저로 이동하세요.";
-      const btn = document.getElementById("openBrowserButton");
-      btn.style.display = "inline-block";
-      btn.addEventListener("click", () => {
-        // 크롬 또는 사파리 열기 시도
-        const schemeUrl = /iPhone|iPad|iPod/i.test(navigator.userAgent)
-          ? targetUrl
-          : "intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-        window.location.href = schemeUrl;
-      });
-    } else {
-      document.getElementById("message").innerText = "잠시 후 자동으로 연결됩니다...";
-      setTimeout(() => {
-        window.location.href = targetUrl;
-      }, 1200);
-    }
-  </script>
-
+  <div class="section">
+    <img src="https://trotcodi-ui.github.io/cupang2/ios_open_browser.png" alt="아이폰 사파리 열기 안내">
+    <p>
+      <strong>아이폰 사용자는</strong><br>
+      오른쪽 하단의 <strong>공유 아이콘(⬆️)</strong>을 눌러<br>
+      스크롤 후 <strong>“Safari로 열기”</strong> 선택,<br>
+      그 후 <strong>“홈 화면에 추가”</strong>를 눌러주세요.
+    </p>
+  </div>
 </body>
 </html>
