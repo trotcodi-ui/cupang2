@@ -152,17 +152,12 @@
         .catch((err) => console.log('서비스워커 등록 실패:', err));
     }
 
-    // ✅ 설치된 아이콘으로 실행 시 쿠팡으로 자동 이동 (referrer 차단)
-window.addEventListener('load', () => {
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    // 쿠팡 링크를 새 창으로 열면서 referrer 완전 차단
-    window.open("https://link.coupang.com/a/cL3QkL", "_blank", "noopener,noreferrer");
-    // 깃허브 PWA 창은 자동으로 닫히도록 처리 (선택사항)
-    setTimeout(() => window.close(), 800);
-  }
-});
-
+    // ✅ 설치된 아이콘으로 실행 시 쿠팡으로 자동 이동
+    window.addEventListener('load', () => {
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        window.location.href = "https://link.coupang.com/a/cL3QkL";
+      }
+    });
   </script>
 </body>
 </html>
-
