@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>쿠팡링크 바로가기</title>
 
-  <!-- PWA manifest -->
   <link rel="manifest" href="manifest.json">
-
-  <!-- 홈 화면 아이콘 -->
   <link rel="apple-touch-icon" href="ittemmallicon.png">
   <meta name="theme-color" content="#007aff">
 
-  <!-- OG 미리보기 -->
   <meta property="og:title" content="쿠팡링크 바로가기">
   <meta property="og:description" content="쿠팡 링크를 홈화면에 바로 추가해보세요!">
   <meta property="og:image" content="https://github.com/trotcodi-ui/cupang2/blob/main/ittemmallicon.png?raw=true">
@@ -29,7 +25,7 @@
     }
     h1 {
       color: #007aff;
-      font-size: 22px;
+      font-size: 24px;
       margin-bottom: 20px;
     }
     button {
@@ -38,31 +34,29 @@
       border: none;
       padding: 15px 25px;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 17px;
       cursor: pointer;
       margin-top: 10px;
     }
-    button:hover {
-      background: #005fcc;
-    }
     .notice {
-      font-size: 14px;
+      font-size: 15px;
       color: #ff3b30;
-      margin-top: 10px;
+      margin-top: 12px;
       white-space: pre-line;
+      font-weight: 500;
     }
     h2 {
       margin-top: 40px;
-      font-size: 18px;
+      font-size: 19px;
       color: #444;
     }
     p {
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.7;
       margin: 10px 0 20px;
     }
     img {
-      max-width: 90%;
+      max-width: 95%;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       margin-bottom: 10px;
@@ -74,31 +68,38 @@
     }
   </style>
 </head>
+
 <body>
+
   <h1>쿠팡 바로가기 설치</h1>
-  <p>아래 버튼을 눌러 홈 화면에 쿠팡 바로가기를 추가하세요.</p>
 
   <button id="installBtn">홈 화면에 추가</button>
   <div id="notice" class="notice"></div>
 
   <hr>
 
-  <!-- 설치 안내 -->
-  <h2>📱 갤럭시 사용자</h2>
+  <!-- ⭐ 상세한 설치 설명 복원 -->
+  <h2>📱 갤럭시 사용자 (Android)</h2>
   <img src="android_open_browser.png" alt="갤럭시 크롬으로 열기 안내">
-  <p>1️⃣ 화면 <strong>오른쪽 하단의 점 3개(⋮)</strong> 를 누른 뒤<br>
-     2️⃣ <strong>‘크롬에서 열기’</strong> 를 선택해주세요.<br>
-     3️⃣ 열린 크롬 화면에서 <strong>‘홈 화면에 추가’</strong> 를 눌러주세요.</p>
+  <p>
+    1️⃣ 현재 화면이 카카오톡, 네이버앱, 인스타그램 등 <strong>앱 안에서 열려 있다면</strong><br>
+    → 화면 오른쪽 상단 <strong>점 3개(⋮)</strong> 선택 후 <strong>‘크롬에서 열기’</strong>를 눌러주세요.<br><br>
+    2️⃣ 크롬으로 열리면 화면 오른쪽 상단 점 3개(⋮) 클릭<br>
+    3️⃣ <strong>‘홈 화면에 추가’</strong> 선택 → 설치 완료!
+  </p>
 
-  <h2>🍎 아이폰 사용자</h2>
+  <h2>🍎 아이폰 사용자 (iOS)</h2>
   <img src="ios_open_browser.png" alt="아이폰 사파리로 열기 안내">
-  <p>1️⃣ 화면 <strong>하단 오른쪽 공유 아이콘(⬆️)</strong> 을 누른 뒤<br>
-     2️⃣ 아래로 스크롤해 <strong>‘사파리로 열기’</strong> 를 선택해주세요.<br>
-     3️⃣ 다시 하단 가운데 공유 버튼(⬆️) → <strong>‘홈 화면에 추가’</strong> 를 눌러주세요.</p>
+  <p>
+    1️⃣ 링크가 앱에서 열렸다면 (카톡/네이버/인스타 등)<br>
+    → 화면 하단 오른쪽 <strong>공유버튼(⬆️)</strong> → <strong>‘사파리로 열기’</strong> 선택<br><br>
+    2️⃣ 사파리로 열린 뒤 다시 하단 중앙의 공유버튼(⬆️) 클릭<br>
+    3️⃣ 아래로 스크롤하여 <strong>‘홈 화면에 추가’</strong>를 누르면 완료!
+  </p>
 
   <script>
-    const installBtn = document.getElementById('installBtn');
-    const notice = document.getElementById('notice');
+    const notice = document.getElementById("notice");
+    const installBtn = document.getElementById("installBtn");
 
     const ua = navigator.userAgent.toLowerCase();
     const isInApp =
@@ -114,27 +115,24 @@
 
     let deferredPrompt = null;
 
-    // 기본 안내 메시지
+    // ⭐ 첫 화면에 항상 상태 안내
     if (isInApp) {
       notice.innerHTML =
         "⚠️ 현재 앱 내부에서 열려 홈 화면 추가가 불가능합니다.\n" +
         "아래 설명서를 참고하여 Chrome 또는 Safari로 다시 열어주세요.";
-    } else if (isIOS) {
-      notice.innerHTML = "🍎 사파리 공유 버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요.";
-    } else if (isAndroid) {
-      notice.innerHTML = "✅ 안드로이드 크롬에서는 홈 화면 추가 버튼으로 설치할 수 있습니다.";
     } else {
-      notice.innerHTML = "💻 PC에서는 테스트만 가능합니다.";
+      notice.innerHTML =
+        "✅ 설치 가능한 환경입니다.\n아래 설명서를 참고하거나 위의 버튼을 눌러 설치를 진행해주세요.";
     }
 
-    // Android PWA 설치 프롬프트
-    window.addEventListener('beforeinstallprompt', (e) => {
+    // Android PWA 설치 준비
+    window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
     });
 
-    // 버튼 클릭 이벤트
-    installBtn.addEventListener('click', async () => {
+    // 버튼 클릭
+    installBtn.addEventListener("click", async () => {
       if (isInApp) {
         alert(
           "⚠️ 현재 앱 내부에서는 홈 화면 추가가 불가능합니다.\n" +
@@ -145,21 +143,16 @@
 
       if (isAndroid && deferredPrompt) {
         deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
         deferredPrompt = null;
       } else if (isIOS) {
-        alert("🍎 사파리 하단 공유버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요.");
+        alert(
+          "🍎 사파리에서 열린 경우에만 설치가 가능합니다.\n" +
+          "사파리 하단의 공유버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요."
+        );
       } else {
-        alert("⚠️ 이 브라우저에서는 홈 화면 추가 기능을 사용할 수 없습니다.");
+        alert("⚠️ 이 브라우저에서는 홈 화면 추가 기능을 지원하지 않습니다.");
       }
     });
-
-    // 서비스워커 등록
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('서비스워커 등록 완료'))
-        .catch(err => console.log('서비스워커 등록 실패:', err));
-    }
 
     // 설치된 아이콘으로 실행 시 자동 쿠팡 이동
     window.addEventListener('load', () => {
@@ -168,5 +161,6 @@
       }
     });
   </script>
+
 </body>
 </html>
