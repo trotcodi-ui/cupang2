@@ -1,178 +1,71 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>쿠팡링크 바로가기</title>
+<script>
+const ua = navigator.userAgent.toLowerCase();
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="ittemmallicon.png">
-  <meta name="theme-color" content="#007aff">
+const isKakao = ua.includes("kakaotalk");
+const isThreads = ua.includes("threads");
+const isNaver = ua.includes("naver");
+const isInstagram = ua.includes("instagram");
+const isDaum = ua.includes("daum");
+const isInApp = isKakao || isThreads || isNaver || isInstagram || isDaum;
 
-  <meta property="og:title" content="쿠팡링크 바로가기">
-  <meta property="og:description" content="쿠팡 링크를 홈화면에 바로 추가해보세요!">
-  <meta property="og:image" content="https://github.com/trotcodi-ui/cupang2/blob/main/ittemmallicon.png?raw=true">
-  <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/">
+const isIOS = /iphone|ipad|ipod/.test(ua);
+const isAndroid = ua.includes("android");
 
-  <style>
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: #f8f9fb;
-      color: #333;
-      text-align: center;
-      padding: 30px 20px 80px;
-    }
-    h1 {
-      color: #007aff;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    button {
-      background: #007aff;
-      color: #fff;
-      border: none;
-      padding: 15px 25px;
-      border-radius: 8px;
-      font-size: 17px;
-      cursor: pointer;
-    }
-    .notice {
-      margin-top: 12px;
-      font-size: 15px;
-      color: #ff3b30;
-      white-space: pre-line;
-      font-weight: 500;
-    }
-    h2 {
-      font-size: 19px;
-      margin-top: 40px;
-      color: #444;
-    }
-    p {
-      font-size: 15px;
-      line-height: 1.7;
-    }
-    img {
-      max-width: 94%;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    hr {
-      margin: 40px 0;
-      border-top: 1px solid #ddd;
-      border-bottom: none;
-    }
-  </style>
-</head>
+const notice = document.getElementById("notice");
+const guideArea = document.getElementById("guide-area"); // 설명서 출력 div
 
-<body>
-  <h1>쿠팡 바로가기 설치</h1>
+// ✔ 인앱별 분리된 설명 출력 함수
+function loadGuide() {
+  if (isKakao) {
+    notice.innerHTML = "⚠ 현재 카카오톡 인앱에서는 홈 화면 추가가 불가능합니다.<br>‘크롬에서 열기’를 눌러주세요.";
 
-  <button id="installBtn">홈 화면에 추가</button>
-  <div id="notice" class="notice"></div>
+    guideArea.innerHTML = `
+      <h2>📱 카카오톡에서 여신 경우</h2>
+      <img src="android_open_browser.png">
+      <p>
+        1️⃣ 오른쪽 상단 ⋮ 메뉴 → <strong>크롬에서 열기</strong><br>
+        2️⃣ 크롬에서 ‘홈 화면에 추가’ 실행
+      </p>
+    `;
 
-  <hr />
+  } else if (isThreads) {
+    notice.innerHTML = "⚠ 현재 Threads 인앱에서는 홈 화면 추가가 불가능합니다.<br>오른쪽 상단 ⋯ → ‘외부 브라우저에서 열기’를 눌러주세요.";
 
-  <!-- 설치 설명 시작 -->
-  <h2>📱 갤럭시 사용자</h2>
-  <img src="android_open_browser.png" alt="갤럭시 크롬에서 열기 안내">
-  <p>
-    1️⃣ 카카오톡 / 네이버 / Threads / 인스타 등 <strong>앱 내부에서 열렸다면</strong><br>
-    → 오른쪽 상단 <strong>점 3개(⋮)</strong> → <strong>‘크롬에서 열기’</strong><br><br>
+    guideArea.innerHTML = `
+      <h2>📱 Threads(쓰레드)에서 여신 경우</h2>
+      <img src="threads_open_browser.png">
+      <p>
+        1️⃣ 오른쪽 상단 <strong>⋯ 메뉴</strong><br>
+        2️⃣ <strong>외부 브라우저에서 열기</strong> 선택<br>
+        3️⃣ 크롬/사파리에서 ‘홈 화면에 추가’
+      </p>
+    `;
 
-    2️⃣ 크롬으로 열리면<br>
-    → 오른쪽 상단 점 3개(⋮) → <strong>‘홈 화면에 추가’</strong> 선택
-  </p>
+  } else if (isNaver || isInstagram || isDaum) {
+    notice.innerHTML = "⚠ 현재 앱 내부에서는 홈 화면 추가가 불가능합니다.<br>외부 브라우저로 열어주세요.";
 
-  <h2>🍎 아이폰 사용자</h2>
-  <img src="ios_open_browser.png" alt="아이폰 사파리에서 열기 안내">
-  <p>
-    1️⃣ 앱 내부에서 열렸다면 하단 오른쪽 <strong>공유버튼(⬆️)</strong> → <strong>‘사파리로 열기’</strong><br><br>
+    guideArea.innerHTML = `
+      <h2>📱 앱 내부(네이버/인스타/기타)에서 여신 경우</h2>
+      <img src="open_browser_common.png">
+      <p>
+        1️⃣ 메뉴에서 <strong>브라우저에서 열기</strong> 선택<br>
+        2️⃣ 크롬/사파리에서 ‘홈 화면에 추가’
+      </p>
+    `;
 
-    2️⃣ 사파리에서<br>
-    공유버튼(⬆️) → 아래로 스크롤 → <strong>‘홈 화면에 추가’</strong>
-  </p>
-  <!-- 설치 설명 끝 -->
-
-  <script>
-    const notice = document.getElementById("notice");
-    const installBtn = document.getElementById("installBtn");
-
-    const ua = navigator.userAgent.toLowerCase();
-
-    // ⭐ 전체 인앱 감지 (Threads 포함 완전체)
-    const isInApp =
-      ua.includes("kakaotalk") ||
-      ua.includes("naver") ||
-      ua.includes("daum") ||
-      ua.includes("line") ||
-      ua.includes("band") ||
-      ua.includes("whatsapp") ||
-      ua.includes("fb_iab") ||      // Meta 인앱
-      ua.includes("fbav") ||        // Meta 인앱
-      ua.includes("instagram") ||   // 인스타
-      ua.includes("threads") ||     // Threads 인앱
-      ua.includes("threadsapp") ||  // Threads 또 다른 패턴
-      ua.includes("kakaostory");
-
-    const isIOS = /iphone|ipad|ipod/.test(ua);
-    const isAndroid = /android/.test(ua);
-
-    let deferredPrompt = null;
-
-    // ⭐ 첫 화면 메시지
-    if (isInApp) {
-      notice.innerHTML =
-        "⚠️ 현재 앱 내부에서는 홈 화면 추가가 불가능합니다.\n" +
-        "아래 설명서를 참고하여 Chrome 또는 Safari로 다시 열어주세요.";
-    } else if (isAndroid) {
-      notice.innerHTML =
-        "✅ 설치 가능한 환경입니다!\n" +
-        "갤럭시는 위의 ‘홈 화면에 추가’ 버튼을 바로 눌러 설치하세요.";
+  } else {
+    // 브라우저 환경
+    if (isAndroid) {
+      notice.innerHTML = "✅ 설치 가능한 환경입니다.<br>‘홈 화면에 추가’를 눌러 설치하세요.";
     } else if (isIOS) {
-      notice.innerHTML =
-        "🍎 설치 가능한 환경입니다.\n" +
-        "사파리 공유 버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요.";
+      notice.innerHTML = "🍎 설치 가능합니다.<br>사파리 공유 버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요.";
     } else {
-      notice.innerHTML = "💻 설치 가능한 환경입니다. 아래 설명서를 참고하세요.";
+      notice.innerHTML = "💻 PC에서는 미리보기만 표시됩니다.";
     }
 
-    // ⭐ Android PWA 설치 프롬프트
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
+    guideArea.innerHTML = ""; // 브라우저는 설명서 필요 없음
+  }
+}
 
-    installBtn.addEventListener("click", async () => {
-      if (isInApp) {
-        alert(
-          "⚠️ 현재 앱 내부에서는 홈 화면 추가를 사용할 수 없습니다.\n" +
-          "Chrome 또는 Safari로 다시 열어주세요."
-        );
-        return;
-      }
-
-      if (isAndroid && deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt = null;
-      } else if (isIOS) {
-        alert(
-          "🍎 iPhone은 사파리에서만 설치 가능합니다.\n" +
-          "사파리 → 공유 버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요."
-        );
-      } else {
-        alert("⚠️ 이 브라우저에서는 홈 화면 추가를 지원하지 않습니다.");
-      }
-    });
-
-    // 아이콘으로 실행하면 바로 쿠팡 이동
-    window.addEventListener("load", () => {
-      if (window.matchMedia("(display-mode: standalone)").matches) {
-        window.location.href = "https://link.coupang.com/a/cL3QkL";
-      }
-    });
-  </script>
-
-</body>
-</html>
+loadGuide();
+</script>
