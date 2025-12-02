@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>쿠팡링크 바로가기</title>
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="ittemmallicon.png">
-  <meta name="theme-color" content="#007aff">
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="ittemmallicon.png" />
+  <meta name="theme-color" content="#007aff" />
 
-  <meta property="og:title" content="쿠팡링크 바로가기">
-  <meta property="og:description" content="쿠팡 링크를 홈화면에 바로 추가해보세요!">
-  <meta property="og:image" content="https://github.com/trotcodi-ui/cupang2/blob/main/ittemmallicon.png?raw=true">
-  <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/">
+  <meta property="og:title" content="쿠팡링크 바로가기" />
+  <meta property="og:description" content="쿠팡 링크를 홈화면에 바로 추가해보세요!" />
+  <meta property="og:image" content="https://github.com/trotcodi-ui/cupang2/blob/main/ittemmallicon.png?raw=true" />
+  <meta property="og:url" content="https://trotcodi-ui.github.io/cupang2/" />
 
   <style>
     body {
       font-family: 'Noto Sans KR', sans-serif;
       background: #f8f9fb;
       color: #333;
-      margin: 0;
-      padding: 30px 20px 80px;
       text-align: center;
+      padding: 30px 20px 80px;
     }
     h1 {
       color: #007aff;
@@ -36,30 +35,28 @@
       border-radius: 8px;
       font-size: 17px;
       cursor: pointer;
-      margin-top: 10px;
     }
     .notice {
+      margin-top: 12px;
       font-size: 15px;
       color: #ff3b30;
-      margin-top: 12px;
       white-space: pre-line;
       font-weight: 500;
     }
     h2 {
-      margin-top: 40px;
       font-size: 19px;
+      margin-top: 40px;
       color: #444;
     }
     p {
       font-size: 15px;
       line-height: 1.7;
-      margin: 10px 0 20px;
     }
     img {
-      max-width: 95%;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 94%;
       margin-bottom: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     hr {
       margin: 40px 0;
@@ -70,31 +67,27 @@
 </head>
 
 <body>
-
   <h1>쿠팡 바로가기 설치</h1>
 
   <button id="installBtn">홈 화면에 추가</button>
   <div id="notice" class="notice"></div>
 
-  <hr>
+  <hr />
 
-  <!-- ⭐ 상세한 설치 설명 복원 -->
+  <!-- 상세 설치 가이드 -->
   <h2>📱 갤럭시 사용자 (Android)</h2>
-  <img src="android_open_browser.png" alt="갤럭시 크롬으로 열기 안내">
+  <img src="android_open_browser.png" alt="갤럭시 설치 안내" />
   <p>
-    1️⃣ 현재 화면이 카카오톡, 네이버앱, 인스타그램 등 <strong>앱 안에서 열려 있다면</strong><br>
-    → 화면 오른쪽 상단 <strong>점 3개(⋮)</strong> 선택 후 <strong>‘크롬에서 열기’</strong>를 눌러주세요.<br><br>
-    2️⃣ 크롬으로 열리면 화면 오른쪽 상단 점 3개(⋮) 클릭<br>
-    3️⃣ <strong>‘홈 화면에 추가’</strong> 선택 → 설치 완료!
+    1️⃣ 카카오톡/네이버/인스타/Threads 등 앱 내부에서 열렸다면 <br />
+    → 오른쪽 상단 <strong>점 3개(⋮)</strong> → <strong>‘크롬에서 열기’</strong><br /><br />
+    2️⃣ 크롬으로 열리면 다시 점 3개(⋮) → <strong>‘홈 화면에 추가’</strong>
   </p>
 
   <h2>🍎 아이폰 사용자 (iOS)</h2>
-  <img src="ios_open_browser.png" alt="아이폰 사파리로 열기 안내">
+  <img src="ios_open_browser.png" alt="아이폰 설치 안내" />
   <p>
-    1️⃣ 링크가 앱에서 열렸다면 (카톡/네이버/인스타 등)<br>
-    → 화면 하단 오른쪽 <strong>공유버튼(⬆️)</strong> → <strong>‘사파리로 열기’</strong> 선택<br><br>
-    2️⃣ 사파리로 열린 뒤 다시 하단 중앙의 공유버튼(⬆️) 클릭<br>
-    3️⃣ 아래로 스크롤하여 <strong>‘홈 화면에 추가’</strong>를 누르면 완료!
+    1️⃣ 앱 내부에서 열렸다면 하단 오른쪽 <strong>공유버튼(⬆️)</strong> → <strong>‘사파리로 열기’</strong><br /><br />
+    2️⃣ 사파리에서 다시 공유 버튼(⬆️) → 아래로 스크롤 → <strong>‘홈 화면에 추가’</strong>
   </p>
 
   <script>
@@ -102,36 +95,51 @@
     const installBtn = document.getElementById("installBtn");
 
     const ua = navigator.userAgent.toLowerCase();
+
+    // ⭐ 최강 인앱 감지 (Threads 포함)
     const isInApp =
-      ua.includes('kakaotalk') ||
-      ua.includes('naver') ||
-      ua.includes('instagram') ||
-      ua.includes('fbav') ||
-      ua.includes('line') ||
-      ua.includes('threads');
+      ua.includes("kakaotalk") ||
+      ua.includes("naver") ||
+      ua.includes("daum") ||
+      ua.includes("instagram") ||   // Threads 포함
+      ua.includes("fbav") ||        // Facebook App
+      ua.includes("fb_iab") ||      // Meta In-App Browser
+      ua.includes("line") ||
+      ua.includes("whatsapp") ||
+      ua.includes("band") ||
+      ua.includes("kakaostory");
 
     const isIOS = /iphone|ipad|ipod/.test(ua);
     const isAndroid = /android/.test(ua);
 
     let deferredPrompt = null;
 
-    // ⭐ 첫 화면에 항상 상태 안내
+    // ⭐ 첫 화면 안내 메시지 (홈추가 버튼 바로 아래 출력)
     if (isInApp) {
       notice.innerHTML =
-        "⚠️ 현재 앱 내부에서 열려 홈 화면 추가가 불가능합니다.\n" +
+        "⚠️ 현재 앱 내부에서는 홈 화면 추가가 불가능합니다.\n" +
         "아래 설명서를 참고하여 Chrome 또는 Safari로 다시 열어주세요.";
+    } else if (isAndroid) {
+      notice.innerHTML =
+        "✅ 설치 가능한 환경입니다!\n" +
+        "갤럭시는 위의 '홈 화면에 추가' 버튼을 바로 눌러 설치하세요.\n" +
+        "아래 설명서도 참고할 수 있습니다.";
+    } else if (isIOS) {
+      notice.innerHTML =
+        "🍎 설치 가능한 환경입니다.\n" +
+        "iPhone은 사파리에서 공유 버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요.";
     } else {
       notice.innerHTML =
-        "✅ 설치 가능한 환경입니다.\n아래 설명서를 참고하거나 위의 버튼을 눌러 설치를 진행해주세요.";
+        "💻 설치 가능한 환경입니다. 아래 설명서를 참고하세요.";
     }
 
-    // Android PWA 설치 준비
+    // 안드로이드 설치 이벤트 준비
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
     });
 
-    // 버튼 클릭
+    // 홈 화면 추가 버튼 클릭
     installBtn.addEventListener("click", async () => {
       if (isInApp) {
         alert(
@@ -146,21 +154,20 @@
         deferredPrompt = null;
       } else if (isIOS) {
         alert(
-          "🍎 사파리에서 열린 경우에만 설치가 가능합니다.\n" +
-          "사파리 하단의 공유버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요."
+          "🍎 iPhone은 사파리에서만 설치 가능합니다.\n" +
+          "사파리에서 공유 버튼(⬆️) → '홈 화면에 추가'를 눌러주세요."
         );
       } else {
         alert("⚠️ 이 브라우저에서는 홈 화면 추가 기능을 지원하지 않습니다.");
       }
     });
 
-    // 설치된 아이콘으로 실행 시 자동 쿠팡 이동
-    window.addEventListener('load', () => {
-      if (window.matchMedia('(display-mode: standalone)').matches) {
+    // 아이콘 실행 시 쿠팡 자동 이동
+    window.addEventListener("load", () => {
+      if (window.matchMedia("(display-mode: standalone)").matches) {
         window.location.href = "https://link.coupang.com/a/cL3QkL";
       }
     });
   </script>
-
 </body>
 </html>
