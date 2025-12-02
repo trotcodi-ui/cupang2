@@ -1,3 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>쿠팡 바로가기 설치</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="ittemmallicon.png">
+<meta name="theme-color" content="#007aff">
+
+<style>
+  body { font-family: 'Noto Sans KR', sans-serif; background:#f8f9fb; padding:20px; text-align:center; }
+  h1 { color:#007aff; font-size:24px; margin-bottom:20px; }
+  button { padding:15px 25px; background:#007aff; border:none; border-radius:8px; color:white; font-size:17px; margin-top:10px; }
+  #notice { margin-top:15px; font-size:15px; color:#d00; line-height:1.5; }
+  #guide-area img { width:90%; border-radius:8px; margin:10px 0; }
+</style>
+</head>
+<body>
+
+<h1>쿠팡 바로가기 설치</h1>
+<button id="installBtn">홈 화면에 추가</button>
+<div id="notice"></div>
+
+<hr style="margin:30px 0">
+
+<div id="guide-area"></div>
+
 <script>
 const ua = navigator.userAgent.toLowerCase();
 
@@ -6,66 +35,74 @@ const isThreads = ua.includes("threads");
 const isNaver = ua.includes("naver");
 const isInstagram = ua.includes("instagram");
 const isDaum = ua.includes("daum");
-const isInApp = isKakao || isThreads || isNaver || isInstagram || isDaum;
 
 const isIOS = /iphone|ipad|ipod/.test(ua);
 const isAndroid = ua.includes("android");
 
+const isInApp = isKakao || isThreads || isNaver || isInstagram || isDaum;
+
 const notice = document.getElementById("notice");
-const guideArea = document.getElementById("guide-area"); // 설명서 출력 div
+const guideArea = document.getElementById("guide-area");
+const installBtn = document.getElementById("installBtn");
 
-// ✔ 인앱별 분리된 설명 출력 함수
 function loadGuide() {
+  // 인앱 환경
   if (isKakao) {
-    notice.innerHTML = "⚠ 현재 카카오톡 인앱에서는 홈 화면 추가가 불가능합니다.<br>‘크롬에서 열기’를 눌러주세요.";
-
+    notice.innerHTML = "⚠ 현재 <b>카카오톡 인앱</b>에서는 홈 화면 추가가 불가능합니다.<br>오른쪽 상단 메뉴 → <b>크롬에서 열기</b>를 눌러주세요.";
     guideArea.innerHTML = `
-      <h2>📱 카카오톡에서 여신 경우</h2>
+      <h2>📱 카카오톡 사용 가이드</h2>
       <img src="android_open_browser.png">
-      <p>
-        1️⃣ 오른쪽 상단 ⋮ 메뉴 → <strong>크롬에서 열기</strong><br>
-        2️⃣ 크롬에서 ‘홈 화면에 추가’ 실행
-      </p>
+      <p>1️⃣ 오른쪽 상단 ⋮ → <b>크롬에서 열기</b><br>2️⃣ 열린 크롬에서 ‘홈 화면에 추가’ 선택</p>
     `;
+    return;
+  }
 
-  } else if (isThreads) {
-    notice.innerHTML = "⚠ 현재 Threads 인앱에서는 홈 화면 추가가 불가능합니다.<br>오른쪽 상단 ⋯ → ‘외부 브라우저에서 열기’를 눌러주세요.";
-
+  if (isThreads) {
+    notice.innerHTML = "⚠ 현재 <b>Threads 인앱</b>에서는 홈 화면 추가가 불가능합니다.<br>오른쪽 상단 ⋯ → <b>외부 브라우저에서 열기</b>를 눌러주세요.";
     guideArea.innerHTML = `
-      <h2>📱 Threads(쓰레드)에서 여신 경우</h2>
+      <h2>📱 Threads 사용 가이드</h2>
       <img src="threads_open_browser.png">
-      <p>
-        1️⃣ 오른쪽 상단 <strong>⋯ 메뉴</strong><br>
-        2️⃣ <strong>외부 브라우저에서 열기</strong> 선택<br>
-        3️⃣ 크롬/사파리에서 ‘홈 화면에 추가’
-      </p>
+      <p>1️⃣ 오른쪽 상단 ⋯ → <b>외부 브라우저에서 열기</b><br>2️⃣ 열리는 브라우저에서 ‘홈 화면에 추가’</p>
     `;
+    return;
+  }
 
-  } else if (isNaver || isInstagram || isDaum) {
-    notice.innerHTML = "⚠ 현재 앱 내부에서는 홈 화면 추가가 불가능합니다.<br>외부 브라우저로 열어주세요.";
-
+  if (isNaver || isInstagram || isDaum) {
+    notice.innerHTML = "⚠ 현재 앱 내부에서는 홈 화면 추가가 불가능합니다.<br><b>브라우저에서 열기</b>를 눌러주세요.";
     guideArea.innerHTML = `
-      <h2>📱 앱 내부(네이버/인스타/기타)에서 여신 경우</h2>
+      <h2>📱 인앱 브라우저 사용 가이드</h2>
       <img src="open_browser_common.png">
-      <p>
-        1️⃣ 메뉴에서 <strong>브라우저에서 열기</strong> 선택<br>
-        2️⃣ 크롬/사파리에서 ‘홈 화면에 추가’
-      </p>
+      <p>1️⃣ 메뉴에서 <b>브라우저에서 열기</b><br>2️⃣ 크롬/사파리에서 ‘홈 화면에 추가’</p>
     `;
+    return;
+  }
 
+  // 일반 브라우저 환경
+  if (isAndroid) {
+    notice.innerHTML = "✅ 설치 가능한 환경입니다. 아래 버튼을 누르세요.";
+  } else if (isIOS) {
+    notice.innerHTML = "🍎 설치 가능한 환경입니다.<br>사파리 공유 버튼(⬆) → <b>홈 화면에 추가</b>";
   } else {
-    // 브라우저 환경
-    if (isAndroid) {
-      notice.innerHTML = "✅ 설치 가능한 환경입니다.<br>‘홈 화면에 추가’를 눌러 설치하세요.";
-    } else if (isIOS) {
-      notice.innerHTML = "🍎 설치 가능합니다.<br>사파리 공유 버튼(⬆️) → ‘홈 화면에 추가’를 눌러주세요.";
-    } else {
-      notice.innerHTML = "💻 PC에서는 미리보기만 표시됩니다.";
-    }
-
-    guideArea.innerHTML = ""; // 브라우저는 설명서 필요 없음
+    notice.innerHTML = "💻 PC에서는 미리보기만 표시됩니다.";
   }
 }
 
 loadGuide();
+
+// 홈 화면 추가 버튼
+installBtn.addEventListener("click", function () {
+  if (isInApp) {
+    alert("현재 앱 내부에서는 설치가 불가합니다.\n외부 브라우저(크롬/사파리)로 열어주세요.");
+    return;
+  }
+
+  if (isIOS) {
+    alert("사파리에서 공유 버튼(⬆) → ‘홈 화면에 추가’를 눌러주세요.");
+  } else {
+    alert("브라우저 메뉴에서 ‘홈 화면에 추가’를 눌러주세요.");
+  }
+});
 </script>
+
+</body>
+</html>
